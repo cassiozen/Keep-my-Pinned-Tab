@@ -1,9 +1,13 @@
 pinnedTabs = {};
 
+function patchTab(tabId){
+    chrome.tabs.executeScript(tabId, {code: "window.onbeforeunload = function(e) { return 'This is a pinned tab'; };"});
+};
+
 chrome.tabs.onCreated.addListener(function(tab){
   if(tab.pinned) {
     pinnedTabs[tab.id] = true;
-    chrome.tabs.executeScript(tab.id, {code: "window.onbeforeunload = function(e) { return 'This is a pinned tab'; };"});
+    patchTab(tab.id);
   }
 });
 
@@ -12,7 +16,7 @@ chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
     // Check to see if the tab that got updates wasn't already pinned
     if(!pinnedTabs[tabId]){
       pinnedTabs[tabId] = true;
-      chrome.tabs.executeScript(tabId, {code: "window.onbeforeunload = function(e) { return 'This is a pinned tab'; };"});
+      patchTab(tabId);
     }
   } else if (changeInfo && !changeInfo.pinned) {
     // Check to see if the tab that got updates was pinned
