@@ -1,6 +1,6 @@
 {
   "name": "Keep my Pinned Tab",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "manifest_version": 2,
   "description": "Confirms when you try to close a pinned tab.",
   "icons": {
