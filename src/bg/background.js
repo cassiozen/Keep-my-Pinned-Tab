@@ -1,7 +1,13 @@
 pinnedTabs = {};
 
+const code = `window.addEventListener('beforeunload', (event) => {
+  // Cancel the event as stated by the standard.
+  // Chrome requires returnValue to be set.
+  event.returnValue = 'This is a pinned tab';
+});`;
+
 function patchTab(tabId){
-    chrome.tabs.executeScript(tabId, {code: "window.onbeforeunload = function(e) { return 'This is a pinned tab'; };"});
+    chrome.tabs.executeScript(tabId, {code});
 };
 
 chrome.tabs.onCreated.addListener(function(tab){
